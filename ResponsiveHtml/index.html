@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Responsive Columns</title>
+    <style type="text/css">
+        @media (max-width: 720px) {
+            .responsive .column {
+                position: relative;
+            }
+            .responsive #left-column, .responsive #right-column {
+                width: 100%;
+            }
+            .responsive #main-contents {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+
+        .column {
+            display: inline-block;
+            position: absolute;
+            top:0;
+        }
+        #left-column {
+            background-color: cornflowerblue;
+            width: 170px;
+            left:0;
+        }
+
+        #right-column {
+            background-color: cornsilk;
+            width: 200px;
+            right:0;
+        }
+
+        #main-contents {
+            margin-left: 170px;
+            margin-right: 200px;
+        }
+        .strikethrough {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body class="responsive">
+
+<div id="left-column" class="column">
+    <h3>Left Column</h3>
+    <p class="strikethrough">I don't have a way to test this in IE9, so I hope it works!</p>
+    <p>Downloading virtual box, now.</p>
+</div>
+
+<div id="main-contents" class="column">
+    <h3>Description</h3>
+
+    <p>Using valid HTML and CSS, create a document with a three column layout. The left column should have a width of
+        170px and the right column should be 200px wide. The center column should fluidly expand to fill the center, but
+        should always be at least 350px wide. When the window or device is not large enough to hold all 3 columns, the
+        columns should each fill the entire width of the screen, left column first, center column next and right column
+        last. The layout should work correctly in the major browsers (Chrome, Firefox, Safari, and IE9) and in the major
+        mobile and tablet (Android and iOS) devices.</p>
+</div>
+
+<div id="right-column" class="column">
+    <h3>Right Column</h3>
+    <p>I also didn't test it on Android but I'm more confident that it will work there.</p>
+</div>
+
+</body>
+</html>

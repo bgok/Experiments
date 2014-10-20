@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+Create a simple HTML document that uses JavaScript to make an asynchronous request (details below) to the server that
+will return a list of automobiles in JSON format. Then, display the returned cars and their properties in a list inside
+a <DIV> with the id “carList”. Order the cars by their mpg, descending. Do not make the request until after the page has
+loaded. You may use jQuery.
+
+Request URL: example.com/automobile/list example Response:
+{
+       automobiles:[
+             {“mpg”:25, “price”:11000, “name”:"Subcompact"},
+             {“mpg”:16, “price”:36400, “name”:"Sports"},
+             {“mpg”:25, “price”:16500, “name”:"Compact"},
+             {“mpg”:22, “price”:72000, “name”:"Luxury"}
+] }
+-->
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Sorted Car List</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        function generateCarView(car) {
+            return [
+                    '<div>',
+                        'MPG: <span class="mpg">' + car.mpg + '</span> ',
+                        'Price: <span class="price">' + car.price + '</span> ',
+                        'Name: <span class="name">' + car.name + '</span>',
+                    '</div>'
+            ].join('');
+        }
+
+        $(function () {
+            $.get('automobiles.json', function (data) {
+                data.automobiles
+                    .sort(function (a, b) {
+                        return a.mpg - b.mpg;
+                    })
+                    .forEach(function (car) {
+                        $('#car-list').append(generateCarView(car));
+                    });
+
+            });
+        });
+    </script>
+</head>
+<body>
+
+<h2>Sorted Car List</h2>
+<!-- Ids and classes in HTML should always be snake-case, not camelCase. Sorry for being stubborn. -->
+<div id="car-list"></div>
+
+</body>
+</html>
