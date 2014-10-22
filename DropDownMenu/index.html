@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dropdown Menu</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        header, section {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        header {
+            height: 30px;
+            background-color: cornflowerblue;
+            overflow: visible;
+        }
+
+        section {
+            background-color: ivory;
+        }
+        .green {
+            color: green;
+        }
+        #menu-container ul {
+            padding: 0;
+            cursor: pointer;
+        }
+        #menu-container li {
+            position: relative;
+            list-style-type: none;
+            display: inline-block;
+            width: 100px;
+            text-align: center;
+            height: 20px;
+            background-color: lightgray;
+        }
+        #menu-container ul ul {
+            position: absolute;
+            top: 20px;
+        }
+        #menu-container ul ul ul {
+            top: 0;
+            left: 100px;
+        }
+        .log-message {
+            margin-top: 200px;
+            font-weight: bold;
+        }
+    </style>
+
+    <script type="application/javascript">
+        function logToElementFactory(text) {
+            return function () {
+                var el = document.getElementById("selected-item-log");
+                el.innerHTML = text;
+                el.innerHTML = text;
+            }
+
+        }
+        var menu = [
+            {
+                text: "go",
+                hover: [
+                    {
+                        text: "file",
+                        hover: [
+                            {
+                                text: "one",
+                                action: logToElementFactory("go:file:one")
+                            },
+                            {
+                                text: "two",
+                                action: logToElementFactory("go:file:two")
+                            },
+                            {
+                                text: "three",
+                                action: logToElementFactory("go:file:three")
+                            },
+                            {
+                                text: "four",
+                                action: logToElementFactory("go:file:four")
+                            },
+                            {
+                                text: "five",
+                                action: logToElementFactory("go:file:five")
+                            }
+                        ]
+                    },
+                    {
+                        text: "open",
+                        action: logToElementFactory("go:open")
+                    },
+                    {
+                        text: "save",
+                        action: logToElementFactory("go:save")
+                    },
+                    {
+                        text: "close",
+                        action: logToElementFactory("go:close")
+                    },
+                    {
+                        text: "exit",
+                        action: logToElementFactory("go:exit")
+                    }
+                ]
+            }
+        ];
+
+        function createDetachedNode(tag, text) {
+            var node = document.createElement(tag);
+            if (text) {
+                node.innerHTML = text;
+            }
+            return node;
+        }
+
+        function showMenu(menu, menuRoot) {
+            menu.forEach(function(it) {
+                var menuItem = createDetachedNode("li", it.text + (it.hover ? ' >' : ''));
+                if (it.hover) {
+                    var subMenuContainer;
+                    var hovered = false;
+                    menuItem.onmouseenter = function () {
+                        hovered = true;
+                        // only generate the submenu once
+                        if (!subMenuContainer) {
+                            subMenuContainer = createDetachedNode("ul");
+                            showMenu(it.hover, subMenuContainer);
+                        }
+                        menuItem.appendChild(subMenuContainer);
+                    };
+                    menuItem.onmouseleave = function () {
+                        hovered = false;
+                        // postpone removing the submenu until all child events finish bubbling
+                        window.setTimeout(function() {
+                            if (!hovered) {
+                                if (subMenuContainer.parentNode) {
+                                    menuItem.removeChild(subMenuContainer);
+                                }
+                            }
+                        });
+                    }
+                }
+                if (it.action) {
+                    menuItem.onclick = it.action;
+                }
+                menuRoot.appendChild(menuItem);
+            });
+        }
+
+        window.addEventListener("load", function () {
+            var container = document.getElementById("menu-container");
+            container.innerHTML = "";
+            menuRoot = createDetachedNode('ul');
+            container.appendChild(menuRoot);
+            showMenu(menu, menuRoot);
+        });
+    </script>
+</head>
+<body>
+
+<header id="menu-container">Menu will go here</header>
+
+<section>
+    <h3>Description</h3>
+
+    <p>Write a short, HTML drop-down menu using native JavaScript to control its behavior (bonus points for
+        reusability). The menu should begin with a single button that reveals a drop-down with 5 menu items when you
+        hover over it. Hovering over one of the 5 menu items should reveal a second drop-down menu to the right of the
+        original menu with an additional 5 items.</p>
+
+    <div>
+        Tested with:
+        <ul>
+            <li><span class="green">&#x2713;</span> Chrome 38</li>
+            <li><span class="green">&#x2713;</span> Firefox 33</li>
+            <li><span class="green">&#x2713;</span> Safari 8</li>
+            <li><span class="green">&#x2713;</span> IE 11 (using VirtualBox)</li>
+        </ul>
+    </div>
+    <div class="log-message">Item selected: <span id="selected-item-log"></span></div>
+</section>
+</body>
+</html>
