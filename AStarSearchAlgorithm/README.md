@@ -1,0 +1,1 @@
+see http://en.wikipedia.org/wiki/A*_search_algorithm
